@@ -1,8 +1,9 @@
 from PIL import Image
-from sys import argv
 import operator
+import heapq
+#import jinja2
 
-img = Image.open(argv[1]) #this is a specific image that I tested the code on
+img = Image.open("images/apple.png") #this is a specific image that I tested the code on
 
 def rgb_conv(img):
     rgb_img = img.convert('RGB')
@@ -73,21 +74,50 @@ def size_of_colorcube():
 '''
 
 
-def colorcube():
+def colorcube():#making a color cube so we can determin what groups of colors are mor prominant
     cubelist = []
     for i in sampler():
         cube = []
         for e in i:
             e = int(e)
-            e = e//32
+            e = e//32 #i determined that dividing e by 32 will have 8 different numbers for R,G and B which gives us a 512 color palette.
             cube.append(e)
         cubelist.append(cube)
 
     return cubelist
 
-
+def make_rgb(lst):
+    rgb_list = []
+    for i in lst:
+        if i != '[' and i != ']' and i != ',' and i != ' ': #coz I messed up and made the lists into strings
+            x = int(i) * 32
+            rgb_list.append(x)
+    [r,g,b] = rgb_list
+    return r, g, b
 
 def cubecounter():
+    dictionary = {}
+    cblist_str = [str(item) for item in colorcube()]
+
+    for z in cblist_str:
+        a = cblist_str.count(z)
+        dictionary[z] = a
+        rgb_list=[]
+        for i in z: #tomake them back into tuples so the rgb is read easier
+            if i != '[' and i != ']' and i != ',' and i != ' ': #coz I messed up and made the lists into strings
+                x = int(i) * 32
+                rgb_list.append(x)
+        r,g,b = rgb_list
+        rgb = r,g,b
+        dictionary[rgb] = dictionary.pop(z)
+
+
+
+
+    return dictionary
+
+'''
+def cubecounterrgb():
     dictionary = {}
     accurance_list = []
     cblist_str = [str(item) for item in colorcube()]
@@ -99,22 +129,20 @@ def cubecounter():
 
     accurance_list = sorted(accurance_list)
 
-    return dictionary, accurance_list
+    return dictionary
+'''
 
+def getNumberOfColors():
+    return len(cubecounter())
 
+def getDominant():
+    dictionary = cubecounter()
+    return max(dictionary, key=dictionary.get)
+    #return ( dictionary ,'i found roughly', len(dictionary), 'colors, in which', max(dictionary, key=dictionary.get), 'is the most prominant' )
 
-def analyze():
-    dictionary, accurance_list = cubecounter()
-    print (dictionary)
-    print('i found roughly', len(dictionary), 'colors, in which', max(dictionary, key=dictionary.get), 'is the most prominant' )
-
-
-    #for pix in dictionary:
-    #    print(pix, dictionary[pix])
-
-
-
-
-
-
-analyze()
+def sortcolor():
+    dictionary = cubecounter()
+    sums = 0
+    for key, value in sorted(dictionary.iteritems(), key=lambda (k,v): (v,k)):
+        sums += value
+    return sums

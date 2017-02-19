@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> GMTC </title>
+  </head>
+
+  <body>
+
+
+    <h1> GET.ME.THE.COLOR</h1>
+
+
+      <label>
+        {% for key in dictionary %}
+            <div style="background-color:rgb{{key}};color:white;padding:0px;height:{{dictionary[key]}}px;width:800px"></div>
+        {% endfor %}
+      </label>
+
+  </body>
+</html>
