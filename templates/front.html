@@ -7,8 +7,26 @@
   <body>
 
 
-    <h1> GET.ME.THE.COLOR</h1>
+    <h1> GET.ME.THE.COLOR </h1>
 
+    <form method="post">
+        <input type="radio" name="image" value="one"> Scenery<br>
+        <input type="radio" name="image" value="two"> Satelite Image<br>
+        <input type="radio" name="image" value="three"> Apples <br>
+
+
+        <input type="submit" value="Submit">
+        <br><br>
+
+    </form>
+
+    <form method="post">
+        enter url <input type="text" name="customimage" >
+        <input type="submit" value="Analyze">
+    </form>
+    <br>
+
+    <img src= {{img}} alt= {{img}} style="width:304px;height:228px;">
 
       <label>
         {% for key in dictionary %}

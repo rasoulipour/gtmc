@@ -15,10 +15,8 @@
 # limitations under the License.
 import webapp2
 import os
-from algo import cubecounter
+from algo import getpure
 import jinja2
-
-
 
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates'),
@@ -45,8 +43,24 @@ def content_builder():
 '''
 class MainPage(Handler):
     def get(self):
-        dictionary = cubecounter()
-        self.render("front.html", dictionary=dictionary)
+        dictionary = getpure()
+        img = "http://www.apogeephoto.com/wp-content/uploads/2016/06/14.jpg"
+        self.render("front.html", dictionary=dictionary, img = img)
+
+    def post(self):
+        image = self.request.get("image")
+
+        dictionary = getpure()
+
+        if image == "one":
+            img = "http://www.apogeephoto.com/wp-content/uploads/2016/06/14.jpg"
+        elif image == "two":
+            img = "https://www.tamilnet.com/img/publish/2009/05/Colombo_Fort_81109_445.jpg"
+        elif image == "three":
+            img = "https://fast-company-res.cloudinary.com/image/upload/fc/3005658-poster-aaples.jpg"
+
+
+        self.render("front.html", dictionary=dictionary, img=img)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)

@@ -1,9 +1,11 @@
 from PIL import Image
 import operator
 import heapq
+#from main import MainPage
+
 #import jinja2
 
-img = Image.open("images/apple.png") #this is a specific image that I tested the code on
+img = Image.open("images/abu2.png") #this is a specific image that I tested the code on
 
 def rgb_conv(img):
     rgb_img = img.convert('RGB')
@@ -18,7 +20,7 @@ def img_height(img):
     width, height = img.size
     return height
 
-def sampler(accuracy = 30): #accuracy mesures how many sample shoul be taken in each dimention
+def sampler(accuracy = 20): #accuracy mesures how many sample shoul be taken in each dimention
     # accuracy of 20 should be sufficient
     pixel_list = []  #an empty list that would store all the data from different pixels in it
     w = img_width(img)
@@ -37,6 +39,25 @@ def sampler(accuracy = 30): #accuracy mesures how many sample shoul be taken in 
         y = poo
     #print(len(pixel_list)) #prints the number of samples it takes
     return pixel_list
+
+def getpure():#goes back and checks the avarage of the dominant colors
+    dictionary = cubecounter()
+    Ndic = cubecounter()
+    for i in dictionary: #gives me a few of the dominant colors
+        sr,sg,sb = i  #sr: siplified red
+        avaragecolor = ()
+        R,G,B = 0,0,0
+        counter = 0
+        for z in sampler():
+            r,g,b = z
+            if sr <= r < (sr+32) and sg <= g < (sg+32) and sb <= b < (sb+32):
+                R += r
+                G += g
+                B += b
+                counter += 1
+        avaragecolor += (R//counter),(G//counter),(B//counter)
+        Ndic[avaragecolor] = Ndic.pop(i)
+    return Ndic
 
 
 
@@ -111,10 +132,11 @@ def cubecounter():
         rgb = r,g,b
         dictionary[rgb] = dictionary.pop(z)
 
+    newA = dict(sorted(dictionary.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
 
 
 
-    return dictionary
+    return newA
 
 '''
 def cubecounterrgb():
