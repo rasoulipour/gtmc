@@ -15,13 +15,16 @@
 # limitations under the License.
 import webapp2
 import os
-from algo import getpure
+from algo import main
 import jinja2
 
 
+
+
+
+node = 888
 template_dir = os.path.join(os.path.dirname(__file__), 'templates'),
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
-
 
 
 class Handler(webapp2.RequestHandler):
@@ -36,31 +39,45 @@ class Handler(webapp2.RequestHandler):
         self.write(self.render_str(template, **kw))
 
 
+
 '''
 def content_builder():
      content = '<body style="background-color: rgb'+ str(make_rgb())+ '">' + '<p1>' +  str(make_rgb()) + '</p1>'
      return content
 '''
+
+
 class MainPage(Handler):
+
+
+
     def get(self):
-        dictionary = getpure()
-        img = "http://www.apogeephoto.com/wp-content/uploads/2016/06/14.jpg"
+        img = "images/abu2.png"
+
+        dictionary = main(img)
         self.render("front.html", dictionary=dictionary, img = img)
 
     def post(self):
         image = self.request.get("image")
+        customUrl = self.request.get("customimage")
 
-        dictionary = getpure()
+        if customUrl != "":
+            img = customUrl
 
-        if image == "one":
+        elif image == "one":
             img = "http://www.apogeephoto.com/wp-content/uploads/2016/06/14.jpg"
         elif image == "two":
             img = "https://www.tamilnet.com/img/publish/2009/05/Colombo_Fort_81109_445.jpg"
         elif image == "three":
-            img = "https://fast-company-res.cloudinary.com/image/upload/fc/3005658-poster-aaples.jpg"
+            img = "https://i.imgur.com/9geCmKm.jpg"
+
+
+        dictionary = main(img)
 
 
         self.render("front.html", dictionary=dictionary, img=img)
+
+
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)
