@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> GMTC </title>
+    <title> SEBCA - search engine biased color analysis </title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   </head>
 
   <body>
 
-
-    <h1> GET.ME.THE.COLOR </h1>
+    <h1> SEBCA - search engine biased color analysis</h1>
 
     <form method="post">
         <input type="radio" name="image" value="one"> Scenery<br>
         <input type="radio" name="image" value="two"> Satelite Image<br>
         <input type="radio" name="image" value="three"> Apples <br>
 
-
         <input type="submit" value="Submit">
         <br><br>
-
     </form>
 
     <form method="post">
-        enter url <input type="text" name="customimage" >
+        Enter URL: <input type="text" name="customimage" >
         <input type="submit" value="Analyze">
     </form>
+
+    <form method="post" id="form-img-request">
+        Enter Phrase: <input type="text" id="phraseinput" >
+        <input type="submit" value="Get me the color">
+    </form>
+
+    <div>
+      <p id= "lookuplink" value = ""></p>
+    </div>
+
     <br>
     <img src= {{img}} alt= {{img}} style="width:304px;height:228px;">
 
@@ -32,6 +40,63 @@
             <div style="background-color:rgb{{key}};color:white;padding:0px;height:{{dictionary[key]}}px;width:800px"></div>
         {% endfor %}
       </label>
+
+
+
+
+
+      <script type="text/javascript">
+
+
+      $(document).ready(function() {
+          // register our function as the "callback" to be triggered by the form's submission event
+          $("#form-img-request").submit(fetchAndDisplayimg); // in other words, when the form is submitted, fetchAndDisplayGif() will be executed
+      });
+
+      function fetchAndDisplayimg(event) {
+
+         // This prevents the form submission from doing what it normally does: send a request (which would cause our page to refresh).
+         // Because we will be making our own AJAX request, we dont need to send a normal request and we definitely don't want the page to refresh.
+         event.preventDefault();
+
+
+      var phrase = document.getElementById("phraseinput").value
+      var link = ""
+
+
+          $(function() {
+              var params = {
+                q: phrase
+
+
+              };
+
+              $.ajax({
+                  url: "https://api.cognitive.microsoft.com/bing/v5.0/images/search?" + $.param(params) + "&count=1", 
+                  beforeSend: function(xhrObj){
+                      // Request headers
+                      xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","74391e77720a4801ae6b74854e380300");
+                  },
+                  type: "POST",
+                  // Request body
+                  data: "{body}",
+              })
+              .done(function(data) {
+                  alert("success");
+                  console.log(data);
+                  link = data.value[0].contentUrl;
+                  console.log(link);
+
+                  document.getElementById("lookuplink").value = link;
+                  document.getElementById("lookuplink").innerHTML = link;
+              })
+              .fail(function() {
+                  alert("error");
+              });
+          });
+
+    }
+      </script>
 
   </body>
 </html>

@@ -7,10 +7,10 @@ import urllib, cStringIO
 
 
 def main(iii):
-
+#var iii is any image link given to us from the front end.
 
     file = cStringIO.StringIO(urllib.urlopen(iii).read())
-    img = Image.open(file) #this is a specific image that I tested the code on
+    img = Image.open(file)
 
     def rgb_conv(img):
         rgb_img = img.convert('RGB')
@@ -27,6 +27,7 @@ def main(iii):
 
     def sampler(accuracy = 20): #accuracy mesures how many sample shoul be taken in each dimention
         # accuracy of 20 should be sufficient
+        # increading the accuracy dramatically decreses the speed of the the processing due to increase in the data
         pixel_list = []  #an empty list that would store all the data from different pixels in it
         w = img_width(img)
         h = img_height(img)
@@ -62,6 +63,7 @@ def main(iii):
                     counter += 1
             avaragecolor += (R//counter),(G//counter),(B//counter)
             Ndic[avaragecolor] = Ndic.pop(i)
+
         return Ndic
 
 

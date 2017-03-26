@@ -22,7 +22,6 @@ import jinja2
 
 
 
-node = 888
 template_dir = os.path.join(os.path.dirname(__file__), 'templates'),
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 
@@ -60,8 +59,13 @@ class MainPage(Handler):
     def post(self):
         image = self.request.get("image")
         customUrl = self.request.get("customimage")
+        lookuplink = self.request.get("lookuplink")
+        img = "http://www.apogeephoto.com/wp-content/uploads/2016/06/14.jpg"
 
-        if customUrl != "":
+        if lookuplink != "":
+            img = lookuplink
+
+        elif customUrl != "":
             img = customUrl
 
         elif image == "one":
