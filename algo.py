@@ -16,7 +16,6 @@ def main(iii):
         rgb_img = img.convert('RGB')
         return rgb_img
 
-
     def img_width(img):
         width, height = img.size
         return width
