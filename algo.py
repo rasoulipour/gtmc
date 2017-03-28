@@ -24,7 +24,7 @@ def main(iii):
         width, height = img.size
         return height
 
-    def sampler(accuracy = 20): #accuracy mesures how many sample shoul be taken in each dimention
+    def sampler(accuracy = 20): #accuracy mesures how many sample should be taken in each dimention
         # accuracy of 20 should be sufficient
         # increading the accuracy dramatically decreses the speed of the the processing due to increase in the data
         pixel_list = []  #an empty list that would store all the data from different pixels in it
@@ -32,16 +32,16 @@ def main(iii):
         h = img_height(img)
         x = 0
         y = 0
-        for poo in range(0, h, h//accuracy): #i did this so the image is divided into equal sections for sampling
-            for goo in range(0, w, w//accuracy):
+        for row in range(0, h, h//accuracy): #i did this so the image is divided into equal sections for sampling
+            for column in range(0, w, w//accuracy):
 
                 rgb_img = rgb_conv(img)
-                r, g, b = rgb_img.getpixel((goo, y))
+                r, g, b = rgb_img.getpixel((column, y))
 
                 thiscolorcode = [r,g,b]
                 #print(thiscolorcode)  #activate this if you want to see the samples
                 pixel_list.append(thiscolorcode)
-            y = poo
+            y = row
         #print(len(pixel_list)) #prints the number of samples it takes
         return pixel_list
 
@@ -62,6 +62,8 @@ def main(iii):
                     counter += 1
             avaragecolor += (R//counter),(G//counter),(B//counter)
             Ndic[avaragecolor] = Ndic.pop(i)
+
+        #Ndic = sorted(Ndic.iteritems(), key=operator.itemgetter(1)) #sorts but give back a list instead of a dict! so no good!
 
         return Ndic
 
@@ -106,8 +108,16 @@ def main(iii):
             rgb = r,g,b
             dictionary[rgb] = dictionary.pop(z)
 
-        newA = dict(sorted(dictionary.iteritems(), key=operator.itemgetter(1), reverse=True)[:7])
+        newA = dict(sorted(dictionary.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
         return newA
+
+
+    def totalpx(): #this function gives the totla number of samples from the major colors (for front end use)
+        newA = cubecounter()
+        counter = 0
+        for i in newA:
+            counter += int(newA[i])
+        return counter
 
     def getNumberOfColors():
         return len(cubecounter())
@@ -124,4 +134,9 @@ def main(iii):
             sums += value
         return sums
 
-    return getpure()
+    return getpure(), totalpx()
+
+'''
+a, b = main("images/abu2.png")
+print(type(a))
+'''

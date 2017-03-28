@@ -53,8 +53,8 @@ class MainPage(Handler):
     def get(self):
         img = "images/abu2.png"
 
-        dictionary = main(img)
-        self.render("front.html", dictionary=dictionary, img = img)
+        dictionary, totalpx = main(img)
+        self.render("front.html", dictionary=dictionary, totalpx = totalpx, img = img)
 
     def post(self):
         image = self.request.get("image")
@@ -76,10 +76,10 @@ class MainPage(Handler):
             img = "https://i.imgur.com/9geCmKm.jpg"
 
 
-        dictionary = main(img)
+        dictionary, totalpx = main(img)
 
 
-        self.render("front.html", dictionary=dictionary, img=img)
+        self.render("front.html", dictionary=dictionary, totalpx=totalpx, img=img)
 
 
 

@@ -2,15 +2,96 @@
 <html>
   <head>
 
-    <link rel="stylesheet" href="ccs/bootstrap.min.ccs">
+    <link type="text/css" rel="stylesheet" href="/templates/css/bootstrap.css">
 
     <title> SEBCA - search engine biased color analysis </title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
+
+
+    <style media="screen">
+
+
+    body{
+      background-color: ##f4f4f4;
+      padding-top: 0px;
+    }
+
+    header{
+      margin: 0px 0px 0px 0px;
+      margin-top: 0px;
+      background-color: #111;
+      width: 100%;
+    }
+
+
+    #logo{
+      width: 10% ;
+      height: 10% ;
+      margin: 30px 20px 20px 30px;
+
+    }
+
+
+    input[type=submit] {
+    height: 19px;
+    width: 140px;
+    padding:3px 15px;
+    background:#111;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    color: #eee;
+    -webkit-transition: background 0.5s;
+   transition: background 0.5s;
+}
+    .card{
+        height:220px;
+        width:204px;
+        background-color: #fff;
+        box-shadow: 2px 2px 2px #bbb;
+        padding-left: 4px;
+        padding-top: 4px;
+        text-align: center;
+        border: 1px solid #bbb;
+        border-radius: 2px;2
+      }
+
+    .inputpannel{
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+
+    .inputbox{
+      float: left;
+      margin-right: 50px;
+    }
+
+
+    .button:hover {
+  background-color: #80cd32;
+}
+
+    .color{
+      float:left;
+    }
+    div.color:hover{
+   background-color:#FF0000;
+}
+
+
+
+    </style>
+
   </head>
 
   <body>
-
-    <h1> SEBCA - search engine biased color analysis</h1>
+    <header>
+      <div class="logo">
+        <img id= "logo" src='http://svgshare.com/i/14T.svg' title='sebca' />
+      </div>
+    </header>
 <!--
     <form method="post">
         <input type="radio" name="image" value="one"> Scenery<br>
@@ -22,36 +103,59 @@
     </form>
 
 -->
+  <div class="inputpannel">
 
-    <form method="post" >
-        Enter URL: <input id = "urllink" type="text" name="customimage" >
-        <input id = "urlbutton" type="submit" value="Analyze">
-    </form>
+      <form method="post" id="form-img-request" class="inputbox">
+          Enter Phrase: <input type="text" id="phraseinput" >
+          <input type="submit" value="Get me the color" class="button" onclick="loading()">
+      </form>
 
-    <form method="post" id="form-img-request">
-        Enter Phrase: <input type="text" id="phraseinput" >
-        <input type="submit" value="Get me the color">
-    </form>
+      <div class="inputbox">
+          <p id="loading"></p>
+      </div>
 
-    <div>
-      <p id= "lookuplink" value = ""></p>
-    </div>
+      <form method="post" class="inputbox" hidden="true">
+          Enter URL: <input id = "urllink" type="text" name="customimage" >
+          <input id = "urlbutton" type="submit" value="Analyze" class="button">
+      </form>
+
+
+
+  </div>
+
+
+      <div>
+        <p id= "lookuplink" value = ""></p>
+      </div>
+
+
 <!--
     <br>
     <img class="img-rounded" src= {{img}} alt= {{img}} style="width:304px;height:228px;">
 -->
+    <div class="card">
       <label>
         {% for key in dictionary %}
-            <div style="background-color:rgb{{key}};color:white;padding:0px;height:{{dictionary[key]}}px;width:800px"></div>
+            <div class="color" style="background-color:rgb{{key}};color:white;padding:0px;height:150px;width: calc({{dictionary[key]}}px / {{totalpx}} * 200);"></div>
         {% endfor %}
       </label>
+      <p>{{totalpx}}</p>
+      <div class="keyphrase">
+        <p id= "phrase"> </p>
+      </div>
 
+    </div>
 
 
 
 
       <script type="text/javascript">
+      var j = {{totalpx}};
+      console.log(j);
 
+      function loading() {
+        document.getElementById("loading").innerHTML = "Loading..."
+    }
 
       $(document).ready(function() {
           // register our function as the "callback" to be triggered by the form's submission event
@@ -96,6 +200,7 @@
 
                   document.getElementById("urllink").value = link;
                   document.getElementById("urlbutton").click();
+                  document.getElementById("phrase").innerHTML = phrase;
 
 
               })
