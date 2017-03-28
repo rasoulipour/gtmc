@@ -65,7 +65,7 @@
 
     .inputbox{
       float: left;
-      margin-right: 50px;
+      margin-right: 30px;
     }
 
 
@@ -79,6 +79,14 @@
     div.color:hover{
    background-color:#FF0000;
 }
+
+  #loading{
+    float: left;
+    margin: 0px 0px 0px 0px ;
+    color: #111;
+    height: 19px;
+  }
+
 
 
 
@@ -110,9 +118,7 @@
           <input type="submit" value="Get me the color" class="button" onclick="loading()">
       </form>
 
-      <div class="inputbox">
           <p id="loading"></p>
-      </div>
 
       <form method="post" class="inputbox" hidden="true">
           Enter URL: <input id = "urllink" type="text" name="customimage" >
