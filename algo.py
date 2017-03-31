@@ -1,12 +1,16 @@
 from PIL import Image
 import operator
 import heapq
-import urllib,
+import urllib
+import requests
+from google.appengine.api import urlfetch
+
 
 try:
-    import cStringIO.StringIO as StringIO
-catch ImportError:
-    import StringIO
+    from cStringIO import StringIO
+except:
+    from StringIO import StringIO
+
 #have to fix the cString  thing so that is is compatible if the host is not a mac
 
 
@@ -27,15 +31,15 @@ def main(iii):
 
 
     if URL:
-        f1 = cStringIO.StringIO(urllib.urlopen(iii[0]).read())
-        f2 = cStringIO.StringIO(urllib.urlopen(iii[1]).read())
-        f3 = cStringIO.StringIO(urllib.urlopen(iii[2]).read())
-        f4 = cStringIO.StringIO(urllib.urlopen(iii[3]).read())
-        f5 = cStringIO.StringIO(urllib.urlopen(iii[4]).read())
-        f6 = cStringIO.StringIO(urllib.urlopen(iii[5]).read())
-        f7 = cStringIO.StringIO(urllib.urlopen(iii[6]).read())
-        f8 = cStringIO.StringIO(urllib.urlopen(iii[7]).read())
-        f9 = cStringIO.StringIO(urllib.urlopen(iii[8]).read())
+        f1 = StringIO(urlfetch.fetch(iii[0]).content)
+        f2 = StringIO(urlfetch.fetch(iii[1]).content)
+        f3 = StringIO(urlfetch.fetch(iii[2]).content)
+        f4 = StringIO(urlfetch.fetch(iii[3]).content)
+        f5 = StringIO(urlfetch.fetch(iii[4]).content)
+        f6 = StringIO(urlfetch.fetch(iii[5]).content)
+        f7 = StringIO(urlfetch.fetch(iii[6]).content)
+        f8 = StringIO(urlfetch.fetch(iii[7]).content)
+        f9 = StringIO(urlfetch.fetch(iii[8]).content)
 
         list_im = [f1,f2,f3,f4,f5,f6,f7,f8,f9]
 
