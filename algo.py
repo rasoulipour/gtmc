@@ -1,42 +1,107 @@
 from PIL import Image
 import operator
 import heapq
-import urllib, cStringIO
+import urllib
+import requests
+from google.appengine.api import urlfetch
+
+try:
+    from cStringIO import StringIO
+except:
+    from StringIO import StringIO
+
 #have to fix the cString  thing so that is is compatible if the host is not a mac
 
-
+urlfetch.set_default_fetch_deadline(50)
 
 def main(iii):
-#var iii is any image link given to us from the front end.
+#var iii is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
 
-    file = cStringIO.StringIO(urllib.urlopen(iii).read())
-    img = Image.open(file)
+    iii = iii.split() #makes the string into a list based on the spaces
 
-    def rgb_conv(img):
-        rgb_img = img.convert('RGB')
-        return rgb_img
 
-    def img_width(img):
-        width, height = img.size
-        return width
+    # Below: mechanism to identify the addresses that are given are URLs or Local Addresses
+    URL = False
+    firstAddress = iii[0] # firstAddress is the first address given in the list 'iii'
+    firstChar = firstAddress[0] # firstAddress is the first character in the first address
 
-    def img_height(img):
-        width, height = img.size
-        return height
+    if firstChar == "h" or firstChar == "H":
+        URL = True
 
-    def sampler(accuracy = 20): #accuracy mesures how many sample should be taken in each dimention
+
+    if URL:
+
+        links_dict={}  # a dictionary that will contain all the links with certain variables
+        for x in range(9):
+            try:
+                links_dict["link{0}".format(x)] = StringIO(urlfetch.fetch(iii[x]).content)
+            except:
+                links_dict["link{0}".format(x)] = "images/blank.png"
+
+
+        list_im = [links_dict["link0"],links_dict["link1"],links_dict["link2"],links_dict["link3"],links_dict["link4"],links_dict["link5"],links_dict["link6"],links_dict["link7"],links_dict["link8"]]
+
+
+    else:
+        list_im = iii
+
+
+
+    #images = map(Image.open, list_im)
+
+
+    new_im = Image.new('RGB', (300,300))
+    total_width = 300
+    max_height = 300
+    x_offset = 0
+    y_offset = 0
+
+    for im in list_im:
+        try:
+            i = Image.open(im)
+        except:
+            i = Image.open("images/blank.png")
+
+        images = (i.thumbnail((100,100), Image.NEAREST), list_im)
+        new_im.paste(i, (x_offset,y_offset))
+        x_offset += 100
+        print(x_offset)
+        if x_offset == 300:
+            x_offset = 0
+            y_offset += 100
+            print(y_offset)
+
+    '''
+    for u in images:
+        images = (u.thumbnail((100,100), Image.NEAREST), images)
+        new_im.paste(u, (x_offset,y_offset))
+        x_offset += 100
+        print(x_offset)
+        if x_offset == 300:
+            x_offset = 0
+            y_offset += 100
+            print(y_offset)
+    '''
+    #widths, heights = zip(*(i.size for i in images))
+    #new_im.save('images/test.jpg')
+
+    img = new_im
+
+
+################################################### analyzing the image ######################################
+
+    def sampler(accuracy = 30): #accuracy mesures how many sample should be taken in each dimention
         # accuracy of 20 should be sufficient
         # increading the accuracy dramatically decreses the speed of the the processing due to increase in the data
         pixel_list = []  #an empty list that would store all the data from different pixels in it
-        w = img_width(img)
-        h = img_height(img)
+        w = 300
+        h = 300
         x = 0
         y = 0
-        for row in range(0, h, h//accuracy): #i did this so the image is divided into equal sections for sampling
-            for column in range(0, w, w//accuracy):
+        for row in range(0, h, 10): #i did this so the image is divided into equal sections for sampling
+            for column in range(0, w, 10):
 
-                rgb_img = rgb_conv(img)
-                r, g, b = rgb_img.getpixel((column, y))
+                r, g, b = img.getpixel((column, y))
 
                 thiscolorcode = [r,g,b]
                 #print(thiscolorcode)  #activate this if you want to see the samples
@@ -136,7 +201,15 @@ def main(iii):
 
     return getpure(), totalpx()
 
+
+#################################################### tests #############################################
+#lnk= "http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg "
+
+#img = [lnk,lnk,lnk,lnk,lnk,lnk,lnk,lnk,lnk]
+#img = str(img)
+#img = [x.strip() for x in img.split('\"')]
 '''
-a, b = main("images/abu2.png")
+#tup = ("images/abu2.png","images/banner.png","images/abu2.png","images/abu2.png","images/abu2.png","images/abu2.png","images/abu2.png","images/abu2.png","images/abu2.png")
+a, b = main(lnk)
 print(type(a))
 '''

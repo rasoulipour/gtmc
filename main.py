@@ -19,12 +19,8 @@ from algo import main
 import jinja2
 
 
-
-
-
 template_dir = os.path.join(os.path.dirname(__file__), 'templates'),
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
-
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -37,51 +33,21 @@ class Handler(webapp2.RequestHandler):
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
 
-
-
-'''
-def content_builder():
-     content = '<body style="background-color: rgb'+ str(make_rgb())+ '">' + '<p1>' +  str(make_rgb()) + '</p1>'
-     return content
-'''
-
-
 class MainPage(Handler):
 
-
-
     def get(self):
-        img = "images/abu2.png"
+        img = "images/sample.jpg images/orange.png images/banner2.png images/banner.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png"
 
         dictionary, totalpx = main(img)
-        self.render("front.html", dictionary=dictionary, totalpx = totalpx, img = img)
+        self.render("front.html", dictionary=dictionary, totalpx = totalpx)
 
     def post(self):
-        image = self.request.get("image")
-        customUrl = self.request.get("customimage")
-        lookuplink = self.request.get("lookuplink")
-        img = "http://www.apogeephoto.com/wp-content/uploads/2016/06/14.jpg"
-
-        if lookuplink != "":
-            img = lookuplink
-
-        elif customUrl != "":
-            img = customUrl
-
-        elif image == "one":
-            img = "http://www.apogeephoto.com/wp-content/uploads/2016/06/14.jpg"
-        elif image == "two":
-            img = "https://www.tamilnet.com/img/publish/2009/05/Colombo_Fort_81109_445.jpg"
-        elif image == "three":
-            img = "https://i.imgur.com/9geCmKm.jpg"
-
+        urlLinks = self.request.get("urllink")
+        img = urlLinks
 
         dictionary, totalpx = main(img)
 
-
-        self.render("front.html", dictionary=dictionary, totalpx=totalpx, img=img)
-
-
+        self.render("front.html", dictionary=dictionary, totalpx=totalpx)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)

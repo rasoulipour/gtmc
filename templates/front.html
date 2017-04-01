@@ -11,86 +11,101 @@
 
     <style media="screen">
 
+        body{
+            background-color: ##f4f4f4;
+            padding-top: 0px;
+        }
 
-    body{
-      background-color: ##f4f4f4;
-      padding-top: 0px;
-    }
-
-    header{
-      margin: 0px 0px 0px 0px;
-      margin-top: 0px;
-      background-color: #111;
-      width: 100%;
-    }
-
-
-    #logo{
-      width: 10% ;
-      height: 10% ;
-      margin: 30px 20px 20px 30px;
-
-    }
+        header{
+            margin: 0px 0px 0px 0px;
+            margin-top: 0px;
+            background-color: #111;
+            width: 100%;
+        }
 
 
-    input[type=submit] {
-    height: 19px;
-    width: 140px;
-    padding:3px 15px;
-    background:#111;
-    border:0 none;
-    cursor:pointer;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    color: #eee;
-    -webkit-transition: background 0.5s;
-   transition: background 0.5s;
-}
-    .card{
-        height:220px;
-        width:204px;
-        background-color: #fff;
-        box-shadow: 2px 2px 2px #bbb;
-        padding-left: 4px;
-        padding-top: 4px;
-        text-align: center;
-        border: 1px solid #bbb;
-        border-radius: 2px;2
-      }
+        #logo{
+            width: 10% ;
+            height: 10% ;
+            margin: 30px 20px 20px 30px;
+        }
 
-    .inputpannel{
-      padding-top: 30px;
-      padding-bottom: 30px;
-    }
+        #phraseinput{
+          width: 170px;
+        }
 
-    .inputbox{
-      float: left;
-      margin-right: 30px;
-    }
+        input[type=submit] {
+            height: 19px;
+            width: 140px;
+            padding:3px 15px;
+            background:#111;
+            border:0 none;
+            cursor:pointer;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            color: #eee;
+            -webkit-transition: background 0.5s;
+            transition: background 0.5s;
+        }
 
+        .card{
+            height:220px;
+            width:804px;
+            background-color: #fff;
+            box-shadow: 2px 2px 0px #bbb;
+            padding-left: 4px;
+            padding-top: 4px;
+            text-align: center;
+            border: 1px solid #bbb;
+            border-radius: 2px;2
+        }
 
-    .button:hover {
-  background-color: #80cd32;
-}
+        .inputpannel{
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
 
-    .color{
-      float:left;
-    }
-    div.color:hover{
-   background-color:#FF0000;
-}
+        .inputbox{
+            float: left;
+            margin-right: 30px;
+        }
 
-  #loading{
-    float: left;
-    margin: 0px 0px 0px 0px ;
-    color: #111;
-    height: 19px;
-  }
+        .button:hover {
+            background-color: #80cd32;
+        }
 
 
+        .color{
+          float:left;
+        }
+
+
+        div.color:hover{
+           background-color:#FF0000;
+        }
+
+        #loading{
+            float: left;
+            margin: 0px 0px 0px 0px ;
+            color: #111;
+            height: 19px;
+        }
+
+        footer{
+          background-color: black;
+          bottom: 10px;
+          left: 10px;
+          margin: 0px 0px 0px 0px;
+
+
+
+        }
 
 
     </style>
+
+
+<!--//htmlbody---------------------------------------------------------------------------------------------->
 
   </head>
 
@@ -100,17 +115,7 @@
         <img id= "logo" src='http://svgshare.com/i/14T.svg' title='sebca' />
       </div>
     </header>
-<!--
-    <form method="post">
-        <input type="radio" name="image" value="one"> Scenery<br>
-        <input type="radio" name="image" value="two"> Satelite Image<br>
-        <input type="radio" name="image" value="three"> Apples <br>
 
-        <input type="submit" value="Submit">
-        <br><br>
-    </form>
-
--->
   <div class="inputpannel">
 
       <form method="post" id="form-img-request" class="inputbox">
@@ -121,7 +126,7 @@
           <p id="loading"></p>
 
       <form method="post" class="inputbox" hidden="true">
-          Enter URL: <input id = "urllink" type="text" name="customimage" >
+          Enter URL: <input id="urls" type="text" name="urllink">
           <input id = "urlbutton" type="submit" value="Analyze" class="button">
       </form>
 
@@ -135,23 +140,26 @@
       </div>
 
 
-<!--
-    <br>
-    <img class="img-rounded" src= {{img}} alt= {{img}} style="width:304px;height:228px;">
--->
     <div class="card">
       <label>
         {% for key in dictionary %}
-            <div class="color" style="background-color:rgb{{key}};color:white;padding:0px;height:150px;width: calc({{dictionary[key]}}px / {{totalpx}} * 200);"></div>
+            <div class="color" style="background-color:rgb{{key}};color:white;padding:0px;height:150px;width: calc({{dictionary[key]}}px / {{totalpx}} * 800);"></div>
         {% endfor %}
       </label>
       <p>{{totalpx}}</p>
       <div class="keyphrase">
         <p id= "phrase"> </p>
       </div>
-
     </div>
 
+    <footer>
+
+    </footer>
+
+
+
+
+<!---//script------------------------------------------------------------------------------------------------------------->
 
 
 
@@ -187,7 +195,7 @@
               };
 
               $.ajax({
-                  url: "https://api.cognitive.microsoft.com/bing/v5.0/images/search?" + $.param(params) + "&count=1" + "&size=small",
+                  url: "https://api.cognitive.microsoft.com/bing/v5.0/images/search?" + $.param(params) + "&count=9",
                   beforeSend: function(xhrObj){
                       // Request headers
                       xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","74391e77720a4801ae6b74854e380300");
@@ -197,16 +205,20 @@
                   data: "{body}",
               })
               .done(function(data) {
-                  console.log(data);
-                  link = data.value[0].contentUrl;
-                  console.log(link);
 
-                  //document.getElementById("lookuplink").value = link;
-                  //document.getElementById("lookuplink").innerHTML = link;
+                  var links = data.value
+                    .map(function(item){return item.contentUrl})
+                    .join(" ")
+                  console.log(links);
 
-                  document.getElementById("urllink").value = link;
+                  //document.getElementById("lookuplink").value = links;
+                  //document.getElementById("lookuplink").innerHTML = link; #for testing
+                  document.getElementById("urls").value = links;
                   document.getElementById("urlbutton").click();
                   document.getElementById("phrase").innerHTML = phrase;
+                  var con = document.getElementById("urls").value;
+                  console.log(con);
+
 
 
               })
