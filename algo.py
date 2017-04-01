@@ -5,7 +5,6 @@ import urllib
 import requests
 from google.appengine.api import urlfetch
 
-
 try:
     from cStringIO import StringIO
 except:
@@ -13,7 +12,7 @@ except:
 
 #have to fix the cString  thing so that is is compatible if the host is not a mac
 
-
+urlfetch.set_default_fetch_deadline(50)
 
 def main(iii):
 #var iii is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
@@ -31,18 +30,16 @@ def main(iii):
 
 
     if URL:
-        f1 = StringIO(urlfetch.fetch(iii[0]).content)
-        f2 = StringIO(urlfetch.fetch(iii[1]).content)
-        f3 = StringIO(urlfetch.fetch(iii[2]).content)
-        f4 = StringIO(urlfetch.fetch(iii[3]).content)
-        f5 = StringIO(urlfetch.fetch(iii[4]).content)
-        f6 = StringIO(urlfetch.fetch(iii[5]).content)
-        f7 = StringIO(urlfetch.fetch(iii[6]).content)
-        f8 = StringIO(urlfetch.fetch(iii[7]).content)
-        f9 = StringIO(urlfetch.fetch(iii[8]).content)
 
-        list_im = [f1,f2,f3,f4,f5,f6,f7,f8,f9]
+        links_dict={}  # a dictionary that will contain all the links with certain variables
+        for x in range(9):
+            try:
+                links_dict["link{0}".format(x)] = StringIO(urlfetch.fetch(iii[x]).content)
+            except:
+                links_dict["link{0}".format(x)] = "images/blank.png"
 
+
+        list_im = [links_dict["link0"],links_dict["link1"],links_dict["link2"],links_dict["link3"],links_dict["link4"],links_dict["link5"],links_dict["link6"],links_dict["link7"],links_dict["link8"]]
 
 
     else:
@@ -50,7 +47,8 @@ def main(iii):
 
 
 
-    images = map(Image.open, list_im)
+    #images = map(Image.open, list_im)
+
 
     new_im = Image.new('RGB', (300,300))
     total_width = 300
@@ -58,7 +56,22 @@ def main(iii):
     x_offset = 0
     y_offset = 0
 
+    for im in list_im:
+        try:
+            i = Image.open(im)
+        except:
+            i = Image.open("images/blank.png")
 
+        images = (i.thumbnail((100,100), Image.NEAREST), list_im)
+        new_im.paste(i, (x_offset,y_offset))
+        x_offset += 100
+        print(x_offset)
+        if x_offset == 300:
+            x_offset = 0
+            y_offset += 100
+            print(y_offset)
+
+    '''
     for u in images:
         images = (u.thumbnail((100,100), Image.NEAREST), images)
         new_im.paste(u, (x_offset,y_offset))
@@ -68,12 +81,14 @@ def main(iii):
             x_offset = 0
             y_offset += 100
             print(y_offset)
-
+    '''
     #widths, heights = zip(*(i.size for i in images))
     #new_im.save('images/test.jpg')
 
     img = new_im
 
+
+################################################### analyzing the image ######################################
 
     def sampler(accuracy = 30): #accuracy mesures how many sample should be taken in each dimention
         # accuracy of 20 should be sufficient
@@ -187,7 +202,7 @@ def main(iii):
     return getpure(), totalpx()
 
 
-
+#################################################### tests #############################################
 #lnk= "http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg http://zns.india.com/upload/2012/6/15/david-beckham150.jpg "
 
 #img = [lnk,lnk,lnk,lnk,lnk,lnk,lnk,lnk,lnk]
