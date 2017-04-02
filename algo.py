@@ -98,8 +98,8 @@ def main(iii, tag):
         h = 300
         x = 0
         y = 0
-        for row in range(0, h, 10): #i did this so the image is divided into equal sections for sampling
-            for column in range(0, w, 10):
+        for row in range(0, h, 5): #i did this so the image is divided into equal sections for sampling
+            for column in range(0, w, 5):
 
                 r, g, b = img.getpixel((column, y))
 
