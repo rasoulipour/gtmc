@@ -12,9 +12,9 @@ except:
 
 #have to fix the cString  thing so that is is compatible if the host is not a mac
 
-urlfetch.set_default_fetch_deadline(50)
+urlfetch.set_default_fetch_deadline(5)
 
-def main(iii):
+def main(iii, tag):
 #var iii is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
 
     iii = iii.split() #makes the string into a list based on the spaces
@@ -199,7 +199,7 @@ def main(iii):
             sums += value
         return sums
 
-    return getpure(), totalpx()
+    return getpure(), totalpx(), tag
 
 
 #################################################### tests #############################################
