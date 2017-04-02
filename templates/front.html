@@ -12,8 +12,10 @@
     <style media="screen">
 
         body{
-            background-color: ##f4f4f4;
+            background-color: #f4f4f4;
             padding-top: 0px;
+            text-align: center;
+
         }
 
         header{
@@ -50,14 +52,14 @@
 
         .card{
             height:220px;
-            width:804px;
+            width:504px;
             background-color: #fff;
             box-shadow: 2px 2px 0px #bbb;
             padding-left: 4px;
             padding-top: 4px;
             text-align: center;
             border: 1px solid #bbb;
-            border-radius: 2px;2
+            border-radius: 2px;
         }
 
         .inputpannel{
@@ -77,6 +79,7 @@
 
         .color{
           float:left;
+          box-shadow: inset 5px 5px 25px rgba(0,0,0,0.2);
         }
 
 
@@ -84,11 +87,40 @@
            background-color:#FF0000;
         }
 
+        .color {
+            position: relative;
+            display: inline-block;
+        }
+
+        .color .tooltiptext {
+            visibility: hidden;
+            background-color: #222;
+            padding: 3px 3px 3px 3px;
+            color: #eee;
+            text-align: left;
+            font-size: 9px;
+            font-family: sans-serif;
+            position:absolute;
+            top:1px;
+            right:1px;
+
+
+
+
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+        }
+
+        .color:hover .tooltiptext {
+            visibility: visible;
+        }
         #loading{
             float: left;
-            margin: 0px 0px 0px 0px ;
-            color: #111;
-            height: 19px;
+            top: 0px;
+            margin-bottom: 10px;
+            height: 500;
+            width: 500;
         }
 
         footer{
@@ -104,10 +136,9 @@
 
     </style>
 
-
-<!--//htmlbody---------------------------------------------------------------------------------------------->
-
   </head>
+
+  <!--//htmlbody---------------------------------------------------------------------------------------------->
 
   <body>
     <header>
@@ -116,16 +147,21 @@
       </div>
     </header>
 
+        <img id="loading" src="" alt="">
+
   <div class="inputpannel">
 
       <form method="post" id="form-img-request" class="inputbox">
-          Enter Phrase: <input type="text" id="phraseinput" >
+          Enter Phrase: <input name= "phraseinput" type="text" id="phraseinput" >
           <input type="submit" value="Get me the color" class="button" onclick="loading()">
       </form>
 
-          <p id="loading"></p>
+
 
       <form method="post" class="inputbox" hidden="true">
+          <label>
+            <input id="tag" type = "text" name="tag">
+          </label>
           Enter URL: <input id="urls" type="text" name="urllink">
           <input id = "urlbutton" type="submit" value="Analyze" class="button">
       </form>
@@ -143,12 +179,13 @@
     <div class="card">
       <label>
         {% for key in dictionary %}
-            <div class="color" style="background-color:rgb{{key}};color:white;padding:0px;height:150px;width: calc({{dictionary[key]}}px / {{totalpx}} * 800);"></div>
+            <div class="color" style="background-color:rgb{{key}};color:white;padding:0px;height:150px;width: calc({{dictionary[key]}}px / {{totalpx}} * 500);"><span class="tooltiptext">RGB {{key}}</span></div>
         {% endfor %}
       </label>
       <p>{{totalpx}}</p>
+      <p>{{tag}}</p>
       <div class="keyphrase">
-        <p id= "phrase"> </p>
+        <p id= "phrase" name="phrase"> </p>
       </div>
     </div>
 
@@ -166,9 +203,9 @@
       <script type="text/javascript">
       var j = {{totalpx}};
       console.log(j);
-
+      //https://media.giphy.com/media/26FmRbw8I5qECy8mY/giphy.gif
       function loading() {
-        document.getElementById("loading").innerHTML = "Loading..."
+        document.getElementById("loading").src = "https://media.giphy.com/media/xUA7aSnLBmreaEKT9C/giphy.gif"
     }
 
       $(document).ready(function() {
@@ -195,10 +232,10 @@
               };
 
               $.ajax({
-                  url: "https://api.cognitive.microsoft.com/bing/v5.0/images/search?" + $.param(params) + "&count=9",
+                  url: "https://api.cognitive.microsoft.com/bing/v5.0/images/search?" + $.param(params) + "&count=9" + "&size=medium",
                   beforeSend: function(xhrObj){
                       // Request headers
-                      xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","74391e77720a4801ae6b74854e380300");
+                      xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","f9f43a0f451844b88a31eee1bf28ad70");
                   },
                   type: "POST",
                   // Request body
@@ -214,9 +251,19 @@
                   //document.getElementById("lookuplink").value = links;
                   //document.getElementById("lookuplink").innerHTML = link; #for testing
                   document.getElementById("urls").value = links;
+                  document.getElementById("tag").value = phrase;
+                  loading();
                   document.getElementById("urlbutton").click();
+
                   document.getElementById("phrase").innerHTML = phrase;
+
+                  //var xxx = document.getElementById("phraseinput").value;
+                  ///console.log("0o0o0o00o00o0o0o0o0o0o0o0o0o0o");
+                  //console.log(xxx);
                   var con = document.getElementById("urls").value;
+
+
+
                   console.log(con);
 
 
