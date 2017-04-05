@@ -26,10 +26,11 @@
       <label class="searchContent">
 
       <p class="tag">{{tag}}</p>
-      <div class="loading">
-        <img id="loading" src="" alt="">
-      </div>
+
         <div id="loop" display="">
+          <div class="loading">
+            <img id="loading" src="" alt="">
+          </div>
           {% for key in dictionary %}
               <div class="color" style="background-color:rgb{{key}};color:white;padding:0px;height:50px;width: calc({{dictionary[key]}}px / {{totalpx}} * 400);"><span class="tooltiptext">RGB {{key}}</span></div>
           {% endfor %}
@@ -63,6 +64,7 @@
 
 
     <div class="database">
+      <div class="hidecontent">
 
         {% for y in range(5) %}
         <div class="cardQ">
@@ -81,6 +83,13 @@
         </div>
         {% endfor %}
 
+
+      </div>
+
+      <div class="show-more">
+        <button type="button" name="button"> showmore</button>
+
+      </div>
     </div>
 
 
@@ -112,6 +121,24 @@
       var phrase = document.getElementById("phraseinput").value
       var link = ""
 
+
+      var color = '';
+        $('div.color').click(function() {
+          console.log("jimmy");
+            var x = $(this).css('background-color');
+            hexc(x);
+            alert(color);
+        })
+
+        function hexc(colorval) {
+            var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            delete(parts[0]);
+            for (var i = 1; i <= 3; ++i) {
+                parts[i] = parseInt(parts[i]).toString(16);
+                if (parts[i].length == 1) parts[i] = '0' + parts[i];
+            }
+            color = '#' + parts.join('');
+        }
 
           $(function() {
               var params = {

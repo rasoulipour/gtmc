@@ -74,8 +74,12 @@ class MainPage(Handler):
         tag = self.request.get("tag")
         img = urlLinks
 
-        dictionary, totalpx, dominant = main(img)
+        #if db.GqlQuery('SELECT * FROM CC WHERE tag = tag'):
+        #    dictionary = exists[0].colorcode
+        #    totalpx = exists[0].totalpx
+        #    dominant = exists[0].dominant
 
+        dictionary, totalpx, dominant = main(img)
         data_input = CC(tag= tag, colorcode= str(dictionary), dominant = str(dominant), totalpx = totalpx, confidence = 50.0)
         data_input.put()
 
