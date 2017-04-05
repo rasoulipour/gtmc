@@ -14,7 +14,7 @@ except:
 
 urlfetch.set_default_fetch_deadline(5)
 
-def main(iii, tag):
+def main(iii):
 #var iii is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
 
     iii = iii.split() #makes the string into a list based on the spaces
@@ -90,7 +90,7 @@ def main(iii, tag):
 
 ################################################### analyzing the image ######################################
 
-    def sampler(accuracy = 30): #accuracy mesures how many sample should be taken in each dimention
+    def sampler(): #accuracy mesures how many sample should be taken in each dimention
         # accuracy of 20 should be sufficient
         # increading the accuracy dramatically decreses the speed of the the processing due to increase in the data
         pixel_list = []  #an empty list that would store all the data from different pixels in it
@@ -120,7 +120,7 @@ def main(iii, tag):
             counter = 0
             for z in sampler():
                 r,g,b = z
-                if sr <= r < (sr+32) and sg <= g < (sg+32) and sb <= b < (sb+32):
+                if sr <= r < (sr+64) and sg <= g < (sg+64) and sb <= b < (sb+64):
                     R += r
                     G += g
                     B += b
@@ -140,7 +140,7 @@ def main(iii, tag):
             cube = []
             for e in i:
                 e = int(e)
-                e = e//32 #i determined that dividing e by 32 will have 8 different numbers for R,G and B which gives us a 512 color palette.
+                e = e//64 #i determined that dividing e by 32 will have 8 different numbers for R,G and B which gives us a 512 color palette.
                 cube.append(e)
 
             if cube != [0,0,0] and cube != [1,1,1] and cube != [2,2,2] and cube != [3,3,3] and cube != [4,4,4] and cube != [5,5,5] and cube != [7,7,7]:
@@ -152,7 +152,7 @@ def main(iii, tag):
         rgb_list = []
         for i in lst:
             if i != '[' and i != ']' and i != ',' and i != ' ': #coz I messed up and made the lists into strings
-                x = int(i) * 32
+                x = int(i) * 64
                 rgb_list.append(x)
         [r,g,b] = rgb_list
         return r, g, b
@@ -167,7 +167,7 @@ def main(iii, tag):
             rgb_list=[]
             for i in z: #tomake them back into tuples so the rgb is read easier
                 if i != '[' and i != ']' and i != ',' and i != ' ': #coz I messed up and made the lists into strings
-                    x = int(i) * 32
+                    x = int(i) * 64
                     rgb_list.append(x)
             r,g,b = rgb_list
             rgb = r,g,b
@@ -199,7 +199,7 @@ def main(iii, tag):
             sums += value
         return sums
 
-    return getpure(), totalpx(), tag
+    return getpure(), totalpx(), getDominant()
 
 
 #################################################### tests #############################################

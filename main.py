@@ -19,6 +19,8 @@ from algo import main
 import jinja2
 import datetime
 from google.appengine.ext import db
+import ast
+import operator
 
 
 
@@ -26,12 +28,14 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates'),
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 
 
+
 class CC(db.Model):
     tag = db.StringProperty(required = True)
     colorcode = db.StringProperty(required = True)
+    dominant = db.StringProperty(required = True)
     totalpx = db.IntegerProperty(required = True)
     confidence = db.FloatProperty(required = True)
-    date = db.DateTimeProperty(auto_now_add = True)
+    created = db.DateTimeProperty(auto_now_add = True)
 
 
 class Handler(webapp2.RequestHandler):
@@ -49,29 +53,39 @@ class MainPage(Handler):
 
     def get(self):
         img = "images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png"
-        default_tag = "Color of the day"
+        default_tag = "COLOR OF THE DAY"
 
-        dictionary, totalpx, tag = main(img, default_tag)
+        dictionary, totalpx, dominant = main(img)
 
-        combos = db.GqlQuery("SELECT * FROM CC ORDER BY created DESC LIMIT 5")
+        q = db.GqlQuery('SELECT * FROM CC ORDER BY created DESC LIMIT 5')
 
-        self.render("front.html", dictionary=dictionary, totalpx = totalpx, combos = combos, tag=default_tag)
+        queryDict = {}
+        for n in range(5):
+            queryDict[n] = ast.literal_eval(q[n].colorcode)
+
+        self.render("front.html", dictionary=dictionary, totalpx = totalpx, q = q, tag=default_tag, queryDict = queryDict)
+
+
 
 
 
     def post(self):
         urlLinks = self.request.get("urllink")
         tag = self.request.get("tag")
-        print("xxxxxxxxxxxx", tag)
         img = urlLinks
 
-        dictionary, totalpx, tag = main(img, tag)
+        dictionary, totalpx, dominant = main(img)
 
-        data_input = CC(tag= tag, colorcode= str(dictionary), totalpx = totalpx, confidence = 50.0)
+        data_input = CC(tag= tag, colorcode= str(dictionary), dominant = str(dominant), totalpx = totalpx, confidence = 50.0)
         data_input.put()
 
+        q = db.GqlQuery('SELECT * FROM CC ORDER BY created DESC LIMIT 5')
 
-        self.render("front.html", dictionary=dictionary, totalpx=totalpx, tag= tag)
+        queryDict = {}
+        for n in range(5):
+            queryDict[n] = ast.literal_eval(q[n].colorcode)
+
+        self.render("front.html", dictionary=dictionary, totalpx=totalpx, tag = tag, q=q, queryDict = queryDict)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)
