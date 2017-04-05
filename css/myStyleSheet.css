@@ -1,0 +1,199 @@
+    body{
+        background-color: #f4f4f4;
+        padding-top: 0px;
+        text-align: center;
+
+    }
+
+    header{
+        margin: 0px 0px 0px 0px;
+        margin-top: 0px;
+        width: 100%;
+    }
+
+    div{
+      padding: 0px 0px 0px 0px;
+      margin: 0px 0px 0px 0px;
+    }
+
+    #logo{
+        width: 10% ;
+        height: 10% ;
+        margin: 30px 20px 20px 30px;
+        font-family: "CenturyGothic";
+        text-align: center;
+        font-size: 27px;
+    }
+
+    #phraseinput{
+      width: 315px;
+      float: left;
+      margin-right: 15px;
+      box-shadow: inset 0px 5px 0px rgba(0,0,0,0.1);
+    }
+
+    .button{
+      float: right;
+      right: 0px;
+      margin-left: 0px;
+      height: 30px;
+      width: 70px;
+    }
+
+    input[type=text] {
+        height: 30px;
+        width: 170px;
+        padding: 0px 6px;
+        margin: 0px 0;
+        border: none;
+        background-color: #c4c4c4;
+        border-radius: 5px;
+        color: #111;
+      }
+
+    input[type=submit] {
+
+        background:#111;
+        border:0 none;
+        cursor:pointer;
+        -webkit-border-radius: 2px;
+        border-radius: 5px;
+        color: #eee;
+        -webkit-transition: background 0.5s;
+        transition: background 0.5s;
+    }
+
+    .card{
+        margin: auto;
+        margin-top: 100px;
+        width: 400px;
+        height: 60px;
+        border: 3px solid green;
+        box-shadow: 0px 0px 0px #bbb;
+        text-align: center;
+        border: 0px solid #bbb;
+        border-radius: 2px;
+    }
+
+    .searchContent{
+
+      margin-bottom: 20px;
+    }
+
+    .database{
+      padding-top: 90px;
+      margin: auto;
+      width: auto;
+      height: auto;
+    }
+
+
+
+    .cardQ{
+        height:120px;
+        width:210px;
+        margin: 10px;
+        background-color: #fff;
+        box-shadow: 2px 2px 0px #bbb;
+        padding-left: 4px;
+        padding-top: 4px;
+        text-align: center;
+        border: 1px solid #bbb;
+        border-radius: 2px;
+        float: left;
+    }
+
+    .confidence{
+
+      font-size: 8px;
+    }
+
+    .tag{
+      font-family: "Futura";
+      font-weight: bold;
+    }
+
+
+    .inputpannel{
+        margin: auto;
+        width: 400px;
+        height: 60px;
+        margin-top: 40px;
+
+
+    }
+
+    .inputbox{
+        float: left;
+
+    }
+
+    .button:hover {
+        background-color: #80cd32;
+    }
+
+
+    .color{
+      float:left;
+      margin-left: 0;
+      box-shadow: inset 0px 5px 0px rgba(0,0,0,0.3);
+    }
+
+
+    div.color:hover{
+       background-color:#FF0000;
+    }
+
+    .color {
+        position: relative;
+        display: inline-block;
+    }
+
+    .color .tooltiptext {
+        visibility: hidden;
+        background-color: #222;
+        padding: 3px 3px 3px 3px;
+        color: #eee;
+        text-align: left;
+        font-size: 9px;
+        font-family: sans-serif;
+        position:absolute;
+        top:1px;
+        right:1px;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
+
+    .color:hover .tooltiptext {
+        visibility: visible;
+    }
+    #loading{
+        float: left;
+        top: 0px;
+        left: 0px;
+        position: relative;
+        height: 50;
+        width: 400;
+    }
+
+
+    .loading{
+        float: left;
+        top: 0px;
+        left: 0px;
+        position: relative;
+        background: black;
+        height: 50;
+        width: 400;
+    }
+
+    #loop{
+
+    }
+
+
+    footer{
+
+
+    }
