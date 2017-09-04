@@ -29,6 +29,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), a
 
 
 
+
 class CC(db.Model):
     tag = db.StringProperty(required = True)
     colorcode = db.StringProperty(required = True)
@@ -52,20 +53,22 @@ class Handler(webapp2.RequestHandler):
 class MainPage(Handler):
 
     def get(self):
-        img = "images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png images/abu2.png"
+        img = "images/sample3.png"
         default_tag = "COLOR OF THE DAY"
+        displaygray = "false"
 
-        dictionary, totalpx, dominant = main(img)
+        dictionary, totalpx, dominant, displaygray = main(img, displaygray)
 
-        q = db.GqlQuery('SELECT * FROM CC ORDER BY created DESC LIMIT 5')
-
+        q = db.GqlQuery('SELECT * FROM CC ORDER BY tag')
+        counter = 0
         queryDict = {}
-        for n in range(5):
-            queryDict[n] = ast.literal_eval(q[n].colorcode)
+        for n in q:
+            queryDict[counter] = ast.literal_eval(n.colorcode)
+            counter += 1
+
+
 
         self.render("front.html", dictionary=dictionary, totalpx = totalpx, q = q, tag=default_tag, queryDict = queryDict)
-
-
 
 
 
@@ -73,23 +76,26 @@ class MainPage(Handler):
         urlLinks = self.request.get("urllink")
         tag = self.request.get("tag")
         img = urlLinks
+        displaygray = self.request.get("grayz")
 
         #if db.GqlQuery('SELECT * FROM CC WHERE tag = tag'):
         #    dictionary = exists[0].colorcode
         #    totalpx = exists[0].totalpx
         #    dominant = exists[0].dominant
 
-        dictionary, totalpx, dominant = main(img)
+        dictionary, totalpx, dominant, displaygray = main(img, displaygray)
         data_input = CC(tag= tag, colorcode= str(dictionary), dominant = str(dominant), totalpx = totalpx, confidence = 50.0)
         data_input.put()
 
-        q = db.GqlQuery('SELECT * FROM CC ORDER BY created DESC LIMIT 5')
+        q = db.GqlQuery('SELECT * FROM CC ORDER BY tag')
 
         queryDict = {}
-        for n in range(5):
-            queryDict[n] = ast.literal_eval(q[n].colorcode)
+        counter = 0
+        for n in q:
+            queryDict[counter] = ast.literal_eval(n.colorcode)
+            counter += 1
 
-        self.render("front.html", dictionary=dictionary, totalpx=totalpx, tag = tag, q=q, queryDict = queryDict)
+        self.render("front.html", dictionary=dictionary, totalpx=totalpx, tag = tag, q=q, queryDict = queryDict, displaygray=displaygray)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)

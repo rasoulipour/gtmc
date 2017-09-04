@@ -1,3 +1,5 @@
+#image analysis algorithm by Mohammad Rasoulipour 2017 for SEBCA
+
 from PIL import Image
 import operator
 import heapq
@@ -10,19 +12,21 @@ try:
 except:
     from StringIO import StringIO
 
-#have to fix the cString  thing so that is is compatible if the host is not a mac
+
+
+#have to fix the cString  thing so that is  compatible if the host is not a mac - fixed
 
 urlfetch.set_default_fetch_deadline(5)
 
-def main(iii):
-#var iii is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
+def main(raw_urls, displaygray):
+#var raw_urls is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
 
-    iii = iii.split() #makes the string into a list based on the spaces
+    raw_urls = raw_urls.split() #makes the string into a list based on the spaces
 
 
     # Below: mechanism to identify the addresses that are given are URLs or Local Addresses
     URL = False
-    firstAddress = iii[0] # firstAddress is the first address given in the list 'iii'
+    firstAddress = raw_urls[0] # firstAddress is the first address given in the list 'raw_urls'
     firstChar = firstAddress[0] # firstAddress is the first character in the first address
 
     if firstChar == "h" or firstChar == "H":
@@ -34,7 +38,7 @@ def main(iii):
         links_dict={}  # a dictionary that will contain all the links with certain variables
         for x in range(9):
             try:
-                links_dict["link{0}".format(x)] = StringIO(urlfetch.fetch(iii[x]).content)
+                links_dict["link{0}".format(x)] = StringIO(urlfetch.fetch(raw_urls[x]).content)
             except:
                 links_dict["link{0}".format(x)] = "images/blank.png"
 
@@ -43,7 +47,7 @@ def main(iii):
 
 
     else:
-        list_im = iii
+        list_im = raw_urls
 
 
 
@@ -88,6 +92,7 @@ def main(iii):
     img = new_im
 
 
+
 ################################################### analyzing the image ######################################
 
     def sampler(): #accuracy mesures how many sample should be taken in each dimention
@@ -98,14 +103,25 @@ def main(iii):
         h = 300
         x = 0
         y = 0
-        for row in range(0, h, 5): #i did this so the image is divided into equal sections for sampling
-            for column in range(0, w, 5):
+        #divider = -5 #this is a variale that will be squared and determine how much the sampler jumps.
+        #selector = 0 #since we have 3 images on each side we want to repeat the process three times
 
+        background_sampler =[]
+
+        sectionlist = [1,25,41,50,54,55,56,60,69,85,98,
+        101,125,141,150,154,155,156,160,169,185,198,
+        201,225,241,250,254,255,256,260,269,285,298] #an X^2 equasion that x gets numbers between [-5-5] and describes how many steps a sampler should jump
+
+        for row in sectionlist: #i did this so the image is divided into sections for sampling
+            for column in sectionlist:
                 r, g, b = img.getpixel((column, y))
+
+
 
                 thiscolorcode = [r,g,b]
                 #print(thiscolorcode)  #activate this if you want to see the samples
-                pixel_list.append(thiscolorcode)
+                if thiscolorcode != [0,0,0] and thiscolorcode != [100,100,100]:
+                    pixel_list.append(thiscolorcode)
             y = row
         #print(len(pixel_list)) #prints the number of samples it takes
         return pixel_list
@@ -136,6 +152,7 @@ def main(iii):
 
     def colorcube():#making a color cube so we can determin what groups of colors are mor prominant
         cubelist = []
+
         for i in sampler():
             cube = []
             for e in i:
@@ -143,8 +160,15 @@ def main(iii):
                 e = e//64 #i determined that dividing e by 32 will have 8 different numbers for R,G and B which gives us a 512 color palette.
                 cube.append(e)
 
-            if cube != [0,0,0] and cube != [1,1,1] and cube != [2,2,2] and cube != [3,3,3] and cube != [4,4,4] and cube != [5,5,5] and cube != [7,7,7]:
-                cubelist.append(cube) #excludes the grays
+
+            if displaygray == "checked":
+                cubelist.append(cube)
+
+
+            else:#excludes the grays
+                if cube != [0,0,0] and cube != [1,1,1] and cube != [2,2,2] and cube != [3,3,3] and cube != [4,4,4] and cube != [5,5,5] and cube != [7,7,7]:
+                    cubelist.append(cube)
+
 
         return cubelist
 
@@ -199,7 +223,7 @@ def main(iii):
             sums += value
         return sums
 
-    return getpure(), totalpx(), getDominant()
+    return getpure(), totalpx(), getDominant(), displaygray
 
 
 #################################################### tests #############################################
