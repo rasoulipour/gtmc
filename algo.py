@@ -1,3 +1,5 @@
+#image analysis algorithm by Mohammad Rasoulipour 2017 for SEBCA
+
 from PIL import Image
 import operator
 import heapq
@@ -16,15 +18,15 @@ except:
 
 urlfetch.set_default_fetch_deadline(5)
 
-def main(iii, displaygray):
-#var iii is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
+def main(raw_urls, displaygray):
+#var raw_urls is a string cluster of image urls that are sent from the front end - gotten from the value tag of url
 
-    iii = iii.split() #makes the string into a list based on the spaces
+    raw_urls = raw_urls.split() #makes the string into a list based on the spaces
 
 
     # Below: mechanism to identify the addresses that are given are URLs or Local Addresses
     URL = False
-    firstAddress = iii[0] # firstAddress is the first address given in the list 'iii'
+    firstAddress = raw_urls[0] # firstAddress is the first address given in the list 'raw_urls'
     firstChar = firstAddress[0] # firstAddress is the first character in the first address
 
     if firstChar == "h" or firstChar == "H":
@@ -36,7 +38,7 @@ def main(iii, displaygray):
         links_dict={}  # a dictionary that will contain all the links with certain variables
         for x in range(9):
             try:
-                links_dict["link{0}".format(x)] = StringIO(urlfetch.fetch(iii[x]).content)
+                links_dict["link{0}".format(x)] = StringIO(urlfetch.fetch(raw_urls[x]).content)
             except:
                 links_dict["link{0}".format(x)] = "images/blank.png"
 
@@ -45,7 +47,7 @@ def main(iii, displaygray):
 
 
     else:
-        list_im = iii
+        list_im = raw_urls
 
 
 
@@ -64,7 +66,7 @@ def main(iii, displaygray):
         except:
             i = Image.open("images/blank.png")
 
-        images = (i.resize((100,100), Image.ANTIALIAS), list_im)
+        images = (i.thumbnail((100,100), Image.NEAREST), list_im)
         new_im.paste(i, (x_offset,y_offset))
         x_offset += 100
         print(x_offset)
@@ -118,7 +120,7 @@ def main(iii, displaygray):
 
                 thiscolorcode = [r,g,b]
                 #print(thiscolorcode)  #activate this if you want to see the samples
-                if thiscolorcode != [0,0,0] and thiscolorcode != [100,100,100] and thiscolorcode != [255,255,255]:
+                if thiscolorcode != [0,0,0] and thiscolorcode != [100,100,100]:
                     pixel_list.append(thiscolorcode)
             y = row
         #print(len(pixel_list)) #prints the number of samples it takes
@@ -159,7 +161,7 @@ def main(iii, displaygray):
                 cube.append(e)
 
 
-            if displaygray:
+            if displaygray == "checked":
                 cubelist.append(cube)
 
 
@@ -221,7 +223,7 @@ def main(iii, displaygray):
             sums += value
         return sums
 
-    return getpure(), totalpx(), getDominant()
+    return getpure(), totalpx(), getDominant(), displaygray
 
 
 #################################################### tests #############################################

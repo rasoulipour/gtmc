@@ -14,15 +14,12 @@
 
   <body>
 
-
     <header>
       <div class="logo">
         <!--<img id= "logo" src='http://svgshare.com/i/1Ut.svg' title='sebca' /> -->
         <p id="logo"> Sebca </p>
       </div>
     </header>
-
-
 
       <div>
         <p id= "lookuplink" value = ""></p>
@@ -33,6 +30,8 @@
       <label class="searchContent">
 
       <p class="tag">{{tag}}</p>
+
+
 
         <div id="loop" display="">
           <div class="loading">
@@ -48,6 +47,7 @@
       <div class="keyphrase" hidden="true">
         <p id= "phrase" name="phrase"> </p>
       </div>
+
     </div>
 
 
@@ -61,6 +61,8 @@
         <form method="post" class="inputbox" hidden="true">
             <label>
               <input id="tag" type = "text" name="tag">
+              <input type="text" id= "grays" name="grayz">
+
             </label>
             Enter URL: <input id="urls" type="text" name="urllink">
             <input id = "urlbutton" type="submit" value="Analyze" class="button">
@@ -85,15 +87,12 @@
             </button>
 
             <form class="" method="post">
-              <input type="checkbox" name="grays" value="check">
-
+              <input id="grayscheck" type="checkbox" name="grayscheck">
             </form>
 
       <!-- http://imgh.us/pngsave.svg -->
 
   <!--database stuff -->
-
-
 
       <div class="extention">
 
@@ -208,14 +207,23 @@
 
 <!---//script------------------------------------------------------------------------------------------------------------->
 
-
-
       <script type="text/javascript">
       var j = {{totalpx}};
 
+
+
+      $('input[type=checkbox]').click(function () {
+          if ($('input[type=checkbox]').is(':checked')) {
+              $('#grays').val('checked');
+
+          }
+          else{
+              $('#grays').val('unchecked');
+          }
+      });
+
       showHideData();
       showHideInfo();
-
 
       $(function() {
         $("#btnSave").click(function() {
@@ -240,9 +248,6 @@
             x.style.display = 'none';
           }
         }
-
-
-
 
       function showHideInfo() {
         var j = document.getElementById('info');
@@ -304,16 +309,15 @@
                   document.getElementById("urls").value = links;
                   document.getElementById("tag").value = phrase.toUpperCase();
                   document.getElementById("loop").display = "none";
+
                   loading();
+
+
                   document.getElementById("urlbutton").click();
 
                   document.getElementById("phrase").innerHTML = phrase.toUpperCase();
 
                   var con = document.getElementById("urls").value;
-
-
-
-                  console.log(con);
 
 
 
@@ -327,20 +331,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//________________________________________save as png functionality
 
 var saveAs = saveAs || (function(view) {
 	"use strict";
