@@ -71,6 +71,12 @@
     </div>
     <data value=""></data>
 
+    <form class="" method="post">
+      <input id="grayscheck" type="checkbox" name="grayscheck" style="display:inline-block">
+      <label for="grayscheck">Include black and white</label>
+
+    </form>
+
     <div class="buttonholder">
 
             <button id="showinfo" class="hiddenbutton" onclick="showHideInfo(), scrollIntoView();">
@@ -86,9 +92,7 @@
             <img class="icondata" src="http://svgshare.com/i/1UL.svg" alt="Previouse Searches">
             </button>
 
-            <form class="" method="post">
-              <input id="grayscheck" type="checkbox" name="grayscheck">
-            </form>
+
 
       <!-- http://imgh.us/pngsave.svg -->
 
@@ -107,23 +111,24 @@
         <br>
         <div class="infotext">
           <h2>What is Sebca?</h2>
-          <p>Search Engine Biased Color Analysis (SEBCA) is a simple online tool that connects words with colors.</p>
+
+<p>Search Engine Biased Color Analysis (SEBCA) is a simple online tool that connects words with colors.</p>
           <br>
           <img src="http://svgshare.com/i/1VH.svg" alt="word to image" style="width: 100%; margin-bottom: 30px;">
           <br>
-          <p>Type in a phrase in the text box that you would like to have a relevant color pallete for- hit GO! and you will have an array of colors associated with the phrase.</p>
+          <p>Type in a phrase in the text box that you would like to have a relevant color palette for- hit GO! and you will have an array of colors associated with the phrase.</p>
           <br>
           <!--<h2>What is the use for Sebca?</h2>
-          <p>Like many online services that cater to designers and artist with g// but what makes Secba different from thise services its automation.
+          <p>Like many online services that cater to designers and artist with g// but what makes Secba different from those services its automation.
             Sebca does not need pre programmed colors// so in a way  </p>
           <br> -->
           <h2>How does Sebca work?</h2>
-          <p>To put it simply, Sebca uses image search with the relevant tag to gather information about the dominant colors of the relevant search</p>
+          <p>To put it simply, Sebca uses image search with the relevant tag to gather information about the dominant colors of your search</p>
           <p>First: Sebca uses Microsoft Cognitive Service API to gather relevant image urls through Bing Images Search with the keyword user provides and gets back a number of urls (Currently at 9-urls)</p>
           <br>
           <img src="http://svgshare.com/i/1UZ.svg" alt="word to image" style="width: 100%; margin-bottom: 30px;">
           <br>
-          <p>Second: after reciving the relevant urls Sebca algorithm reads the images and put them into one image in a grid form and analyzes them for dominant colors by using histograms for color groups.</p>
+          <p>Second: after receiving the relevant urls, Sebca algorithm reads the images and put them into one image in a grid form and analyzes them for dominant colors by using histograms for color groups.</p>
           <br>
           <img src="http://svgshare.com/i/1WT.svg" alt="word to image" style="width: 100%; margin-bottom: 30px;">
           <br>
@@ -133,31 +138,31 @@
           <h2>Some of the important problems with Sebca!</h2>
           <br>
           <h4>The Zebra Problem</h4>
-          <p>One of the first and main problems faced at early stages of testing was the overwelming presence of whites, and blacks in images. Images that were in clip art had a lot of white around them and real photos had usually had a dark gray and black dominance in them</p>
-          <p>The human brain is good at filtering out irrelevant colors and seeing color despite higlighted or shaded areas. Sebca algorith was not able to do this, so currently a spectrum of gray including back and white are excluded in the outputs.
-          this has solved most of the problems with searches, except the one where user expects to see either black or white, or both, in the output. An obviouse example of this could be found in searches such as Zebra. </p>
+          <p>One of the first and main problems faced at early stages of testing was the overwhelming presence of whites, and blacks in images. Images that were in clip art had a lot of white around them and real photos had usually had a dark gray and black dominance in them</p>
+          <p>The human brain is good at filtering out irrelevant colors and seeing color despite highlighted or shaded areas. Sebca algorithm was not able to do this, so currently a spectrum of gray including black and white are excluded in the outputs.
+          this has solved most of the problems with searches, except the one where user expects to see either black or white, or both, in the output. An obvious example of this could be found in searches such as Zebra. </p>
           <br>
           <img src="http://svgshare.com/i/1Wm.svg" alt="word to image" style="width: 100%; margin-bottom: 30px;">
           <br>
-          <p>You can see that Sebca does well when all the RGB spectrum is included for the Searchword Zebra, but excluding the grays would result in the third palette which lack the two main colors thet the user expects to see. Instead it has included some greens from the images' background.</p>
-          <p>Even with such a problem it is better to keep whites and blacks out of the output since most of users do not search for phrases that include white or black as main color, yet most results yeild black and white as dominant colors.</p>
+          <p>You can see that Sebca does well when all the RGB spectrum is included for the Searchword Zebra, but excluding the grays would result in the third palette which lack the two main colors that the user expects to see. Instead it has included some greens from the images' background.</p>
+          <p>Even with such a problem it is better to keep whites and blacks out of the output since most of users do not search for phrases that include white or black as main color, yet most results yield black and white as dominant colors.</p>
           <br>
           <h4>The Flamingo Problem</h4>
-          <p>The Flamingo problem is the problem of the algorith not being ale distinguish the foreground/subject from the background/environment. Although the presence of colors from the environment is sometimes helpful in giving a better picture of a keyword, it, in some ocassions, overwelms the actuals subject.
+          <p>The Flamingo problem is the problem of the algorithm not being able distinguish the foreground/subject from the background/environment. Although the presence of colors from the environment is sometimes helpful in giving a better picture of a keyword, it, in some occasions, overwhelms the actuals subject.
           A good example of this problem could be seen with the search word 'flamingo'.</p>
           <br>
           <img src="https://s23.postimg.org/wbth7o58r/fla1b.png" alt="word to image" style="width: 100%; margin-bottom: 30px;">
           <br>
           <p>One solution</p>
-          <p>To correct this problem, now the algorithm takes more samples as it gets closer to the center of the image, since statistically speaking it is more likeley that the subject of an image is placed in the center. With this assumption Sebca results in much more center focused color outputs.</p>
+          <p>To correct this problem, now the algorithm takes more samples as it gets closer to the center of the image, since statistically speaking it is more likely that the subject of an image is placed in the center. With this assumption Sebca results in much more center focused color outputs.</p>
           <img src="https://s7.postimg.org/6zbnu04fv/fla2.png" alt="word to image" style="width: 100%; margin-bottom: 30px;">
           <br>
-          <p>A simplified grid of analysis that Sebca currently uses for 9 images. Each number represents an image that has comethrough the API request for images. You can see that each image is resized and placed in the grid and sampled with favouring the center of each image.</p>
+          <p>A simplified grid of analysis that Sebca currently uses for 9 images. Each number represents an image that has come through the API request for images. You can see that each image is resized and placed in the grid and sampled with favouring the center of each image.</p>
           <img src="http://svgshare.com/i/1Wc.svg" alt="word to image" style="width: 100%; margin-bottom: 30px;">
           <br>
           <h2>Have solutions or comments?</h2>
           <p>Please feel free to contact me at m@rasoulipour.com to let me know what you think about Sebca and how it can improve.</p>
-          <!--
+<!--
           <p> Tech Used:</p>
           <ul>Google App Engine</ul>
            -->
